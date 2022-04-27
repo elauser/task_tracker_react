@@ -1,7 +1,10 @@
 import React from 'react'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
+import About from './components/About';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 function App() {
@@ -65,26 +68,33 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <Header 
-        title='Task Tracker' 
-        onAdd={()=>setShowAddTask(!showAddTask)}
-        showAdd={showAddTask}
-      />
-      {showAddTask && <AddTask onAdd={addTask}></AddTask>}
-      {tasks.length > 0 ? 
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}></Tasks> :
-        'No tasks to show'
-      }
-    </div>
+    <Router>
+      <div className="container">
+        <Header 
+          title='Task Tracker' 
+          onAdd={()=>setShowAddTask(!showAddTask)}
+          showAdd={showAddTask}
+        />
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {showAddTask && <AddTask onAdd={addTask}></AddTask>}
+                {tasks.length > 0 ? 
+                  <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}></Tasks> :
+                  'No tasks to show'
+                }
+              </>
+            }
+          />
+          <Route path='/about' element={<About/>}/>
+        </Routes>
+        <Footer/>
+      </div>
+    </Router>
   );
 }
 
-// class App extends React.Component {
-//   render() {
-//     return <h1>Hello From a class</h1>
-//   }
-  
-// }
 
 export default App;
